@@ -1,3 +1,16 @@
 .vscode/
 Logs/
 Builds/
+Packages/
+Assembly-CSharp.csproj
+CellularAutomata.sln
+
+Assets/Prefabs
+Assets/Scenes
+Assets/Sprites
+Assets/TextMesh Pro
+Library/
+Logs/
+obj
+ProjectSettings/
+Temp/

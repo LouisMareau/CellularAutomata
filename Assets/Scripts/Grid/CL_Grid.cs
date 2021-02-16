@@ -21,15 +21,19 @@ public class CL_Grid : MonoBehaviour
         gridCellsParent = new GameObject("Cells");
         gridCellsParent.transform.SetParent(this.transform);
 
-        ResetGrid();
+        for (int x = 0; x < gridDescriptor.gridSize.x; x++) {
+            for (int y = 0; y < gridDescriptor.gridSize.y; y++) {
+                InstantiateGridCells(x,y);
+            }
+        }
 
-        gridCellsParent.transform.position = new Vector3(-gridDescriptor.gridSize.x/2, -gridDescriptor.gridSize.y/2, gridDescriptor.gridDepth);
+        gridCellsParent.transform.position = new Vector3(-gridDescriptor.gridSize.x/2, -gridDescriptor.gridSize.y/2, 0);
     }
 
     private void InstantiateGridCells(int x, int y) {
         GameObject instance = Instantiate(gridCellTemplate, new Vector3(x, y, 0), transform.rotation, gridCellsParent.transform);
-        CL_GridCell c = instance.GetComponent<CL_GridCell>();
-        instance.name = string.Format("Cell {0} [{1},{2}]", c.id, x, y);
+        CL_Cell c = instance.GetComponent<CL_Cell>();
+        instance.name = string.Format("Cell [{0},{1}]", x, y);
         c.x = x;
         c.y = y;
 
@@ -37,24 +41,18 @@ public class CL_Grid : MonoBehaviour
     }
 
     public void ResetGrid() {
-        ClearGrid();
-        
-        for (int x = 0; x < gridDescriptor.gridSize.x; x++) {
-            for (int y = 0; y < gridDescriptor.gridSize.y; y++) {
-                InstantiateGridCells(x,y);
+        for (int x = 0; x < cells.GetLength(0); x++) {
+            for (int y = 0; y < cells.GetLength(1); y++) {
+                cells[x,y].GetComponent<CL_Cell>().cellState = CellState.DEAD;
             }
         }
     }
 
-    private void ClearGrid() {
-        // We first clear the 2-dimensional array 'cells'
-        cells = new GameObject[(int)gridDescriptor.gridSize.x,(int)gridDescriptor.gridSize.y];
+    public void ActivateCell(int x, int y) {
+        cells[x,y].GetComponent<CL_Cell>().cellState = CellState.ALIVE;
+    }
 
-        // Then, we clear the instantiated objects in the scene
-        if (gridCellsParent.transform.childCount > 0) {
-            foreach (Transform cell in gridCellsParent.transform) {
-                Destroy(cell.gameObject);
-            }
-        }
+    public void DeactivateCell(int x, int y) {
+        cells[x,y].GetComponent<CL_Cell>().cellState = CellState.DEAD;
     }
 }

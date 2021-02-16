@@ -6,6 +6,5 @@ using UnityEngine;
 public class CL_GridDescriptor
 {
     public Vector2 gridSize;
-    public float gridDepth;
     public Sprite gridSprite;
 }
