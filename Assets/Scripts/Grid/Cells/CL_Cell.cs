@@ -85,10 +85,12 @@ public class CL_Cell : MonoBehaviour
 
     private void UpdateSprite() {
         if (cellState == CellState.ALIVE) {
-            GetComponent<SpriteRenderer>().color = spriteColorAlive;
+            if (cellHoverState == CellHoverState.HOVER) { GetComponent<SpriteRenderer>().color = spriteColorAliveHover; }
+            else { GetComponent<SpriteRenderer>().color = spriteColorAlive; }
         } 
         else {
-            GetComponent<SpriteRenderer>().color = spriteColorDead;
+            if (cellHoverState == CellHoverState.HOVER) { GetComponent<SpriteRenderer>().color = spriteColorDeadHover; }
+            else { GetComponent<SpriteRenderer>().color = spriteColorDead; }
         }
     }
 

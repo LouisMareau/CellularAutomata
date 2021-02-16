@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 using TMPro;
 
 public enum GameState {
@@ -22,9 +23,49 @@ public class CL_GameManager : MonoBehaviour
     public TextMeshProUGUI timestepTMP;
     public bool resetGridOnPreset { get; set; }
     public Toggle resetGridOnPresetToggle;
+    [Space]
+    public Slider bloomIntensity;
+    public TextMeshProUGUI bloomIntensityValue;
+    public Slider bloomThreshold;
+    public TextMeshProUGUI bloomThresholdValue;
+    public Slider chromaticAberration;
+    public TextMeshProUGUI chromaticAberrationValue;
+    public Slider vignetteIntensity;
+    public TextMeshProUGUI vignetteIntensityValue;
+    public Slider vignetteSmoothness;
+    public TextMeshProUGUI vignetteSmoothnessValue;
+    public Slider vignetteRoundness;
+    public TextMeshProUGUI vignetteRoundnessValue;
+    
+    [Header("POST PROCESSING")]
+    public PostProcessProfile pp_profile;
+    private Bloom pp_bloom;
+    private ChromaticAberration pp_chromaticAberration;
+    private Vignette pp_vignette;
 
     [Header("OTHER REFERENCES")]
     public CL_Grid grid;
+
+    private void Awake() {
+        if (pp_profile.TryGetSettings<Bloom>(out pp_bloom)) {
+            bloomIntensity.value = pp_bloom.intensity;
+            bloomThreshold.value = pp_bloom.threshold;
+            bloomIntensityValue.text = bloomIntensity.value.ToString("F2");
+            bloomThresholdValue.text = bloomThreshold.value.ToString("F2");
+        }
+        if (pp_profile.TryGetSettings<ChromaticAberration>(out pp_chromaticAberration)) {
+            chromaticAberration.value = pp_chromaticAberration.intensity;
+            chromaticAberrationValue.text = chromaticAberration.value.ToString("F2");
+        }
+        if (pp_profile.TryGetSettings<Vignette>(out pp_vignette)) {
+            vignetteIntensity.value = pp_vignette.intensity;
+            vignetteSmoothness.value = pp_vignette.smoothness;
+            vignetteRoundness.value = pp_vignette.roundness;
+            vignetteIntensityValue.text = vignetteIntensity.value.ToString("F2");
+            vignetteSmoothnessValue.text = vignetteSmoothness.value.ToString("F2");
+            vignetteRoundnessValue.text = vignetteRoundness.value.ToString("F2");
+        }
+    }
 
     private void Start() {
         gameState = GameState.PAUSE;
@@ -328,6 +369,31 @@ public class CL_GameManager : MonoBehaviour
         {
             menu.SetActive(!menu.activeSelf);
         }
+    }
+
+    public void SetBloomIntensity() {
+        bloomIntensityValue.text = bloomIntensity.value.ToString("F2");
+        pp_bloom.intensity.Override(bloomIntensity.value);
+    }
+    public void SetBloomThreshold() {
+        bloomThresholdValue.text = bloomThreshold.value.ToString("F2");
+        pp_bloom.threshold.Override(bloomThreshold.value);
+    } 
+    public void SetChromaticAberration() {
+        chromaticAberrationValue.text = chromaticAberration.value.ToString("F2");
+        pp_chromaticAberration.intensity.Override(chromaticAberration.value);
+    }
+    public void SetVignetteIntensity() {
+        vignetteIntensityValue.text = vignetteIntensity.value.ToString("F2");
+        pp_vignette.intensity.Override(vignetteIntensity.value);
+    }
+    public void SetVignetteSmoothness() {
+        vignetteSmoothnessValue.text = vignetteSmoothness.value.ToString("F2");
+        pp_vignette.smoothness.Override(vignetteSmoothness.value);
+    }
+    public void SetVignetteRoundness() {
+        vignetteRoundnessValue.text = vignetteRoundness.value.ToString("F2");
+        pp_vignette.roundness.Override(vignetteRoundness.value);
     }
 
     public void Exit() {
