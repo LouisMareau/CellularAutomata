@@ -17,6 +17,7 @@ public class CL_GameManager : MonoBehaviour
 
     [Header("MENU")]
     public GameObject menu;
+    public static bool isMenuOpen;
 
     [Header("UI REFERENCES")]
     public TextMeshProUGUI playStateTMP;
@@ -75,7 +76,7 @@ public class CL_GameManager : MonoBehaviour
         playStateTMP.text = string.Format("{0}", gameState.ToString());
         timestepTMP.text = string.Format("Timestep: {0} fps", (1/Time.fixedDeltaTime).ToString("F0"));
 
-        resetGridOnPreset = resetGridOnPresetToggle.isOn = true;
+        resetGridOnPreset = resetGridOnPresetToggle.isOn = isMenuOpen = true;
     }
 
     private void Update() {
@@ -368,6 +369,7 @@ public class CL_GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             menu.SetActive(!menu.activeSelf);
+            isMenuOpen = menu.activeSelf;
         }
     }
 

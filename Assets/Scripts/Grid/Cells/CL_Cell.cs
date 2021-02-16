@@ -96,16 +96,19 @@ public class CL_Cell : MonoBehaviour
 
     #region MOUSE EVENTS
     private void OnMouseEnter() {
-        cellHoverState = CellHoverState.HOVER;
-        if (cellState == CellState.ALIVE) { this.gameObject.GetComponent<SpriteRenderer>().color = spriteColorAliveHover; }
-        else { this.gameObject.GetComponent<SpriteRenderer>().color = spriteColorDeadHover; }
-        
-        // If mouse slide over the cell while being held down, we still update the state of the cell
-        if (Input.GetMouseButton(0)) {
-            if (cellState == CellState.ALIVE) {
-                cellState = CellState.DEAD;
-            } else {
-                cellState = CellState.ALIVE;
+        // We only interact with the grid/cells if the menu is closed
+        if (!CL_GameManager.isMenuOpen) {
+            cellHoverState = CellHoverState.HOVER;
+            if (cellState == CellState.ALIVE) { this.gameObject.GetComponent<SpriteRenderer>().color = spriteColorAliveHover; }
+            else { this.gameObject.GetComponent<SpriteRenderer>().color = spriteColorDeadHover; }
+            
+            // If mouse slide over the cell while being held down, we still update the state of the cell
+            if (Input.GetMouseButton(0)) {
+                if (cellState == CellState.ALIVE) {
+                    cellState = CellState.DEAD;
+                } else {
+                    cellState = CellState.ALIVE;
+                }
             }
         }
     }
@@ -117,10 +120,12 @@ public class CL_Cell : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        if (cellState == CellState.ALIVE) {
-            cellState = CellState.DEAD;
-        } else {
-            cellState = CellState.ALIVE;
+        if (!CL_GameManager.isMenuOpen) {
+            if (cellState == CellState.ALIVE) {
+                cellState = CellState.DEAD;
+            } else {
+                cellState = CellState.ALIVE;
+            }
         }
     }
     #endregion
