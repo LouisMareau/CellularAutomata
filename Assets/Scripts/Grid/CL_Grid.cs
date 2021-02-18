@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//using CellularAutomata;
+
 public class CL_Grid : MonoBehaviour
 {
     public CL_GridDescriptor gridDescriptor;
@@ -13,6 +15,10 @@ public class CL_Grid : MonoBehaviour
     [HideInInspector] public GameObject[,] cells;
 
     [Header("DRAW PROPERTIES")]
+    public MeshFilter meshFilter;
+    public MeshRenderer meshRenderer;
+    public Material gridMaterial;
+
     [HideInInspector] public GameObject gridCellsParent;
 
     private void Start() {
@@ -28,6 +34,10 @@ public class CL_Grid : MonoBehaviour
         }
 
         gridCellsParent.transform.position = new Vector3(-gridDescriptor.gridSize.x/2, -gridDescriptor.gridSize.y/2, 0);
+
+        /*MeshData meshData = GridGenerator.GenerateGridMesh(150,80);
+        meshFilter.sharedMesh = meshData.CreatMesh();
+        meshRenderer.sharedMaterial = gridMaterial;*/
     }
 
     private void InstantiateGridCells(int x, int y) {
